@@ -1,0 +1,38 @@
+{% extends "urlprocessing/base.html" %}
+
+{% block page_heading %}{% endblock %}
+{% block title %}Shorten URL{% endblock %}
+
+{% block content %}
+
+	<h2>URL:</h2>
+
+	<form action="" method="post" id="generateHash">
+		{% csrf_token %}
+	<table>{{ form }}</table>
+	<p><input type="submit" value="Submit" class="todo-button"></p>
+	</form>
+
+	<p id="newUrl"></p>
+
+	<script type="text/javascript">
+		$('#generateHash').submit(function(){
+			ret = false;
+			console.log('Hello');
+			$.ajax({
+			  method: "POST",
+			  url: "/",
+			  data: { 
+			  	original_url: $('#id_original_url').val(),
+			  	csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+			  }
+			})
+			  .done(function( msg ) {
+			    $('#newUrl').html(msg);
+			    $('#id_original_url').val('')
+			});
+			return ret;
+		})
+	</script>
+
+{% endblock %}
